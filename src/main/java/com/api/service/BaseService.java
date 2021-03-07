@@ -9,7 +9,6 @@ import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
 import static io.restassured.RestAssured.given;
@@ -17,18 +16,16 @@ import static io.restassured.http.ContentType.JSON;
 import static org.apache.http.HttpStatus.SC_OK;
 
 @Component
-public class BaseService implements InitializingBean {
-    protected static final String LOGIN_ENDPOINT = "/login";
-    protected static final String REGISTER_ENDPOINT = "/register";
+public class BaseService {
     private static final String BASE_URL = "https://api.frs1.ott.kaltura.com/api_v3/service/ottuser/action";
 
-    public static final RequestSpecification requestSpec = new RequestSpecBuilder()
+    public final RequestSpecification requestSpec = new RequestSpecBuilder()
             .setBaseUri(BASE_URL)
             .setAccept(ContentType.JSON)
             .setContentType(JSON)
             .build();
 
-    public static final ResponseSpecification responseSpec = new ResponseSpecBuilder()
+    public final ResponseSpecification responseSpec = new ResponseSpecBuilder()
             .expectStatusCode(SC_OK)
             .build();
 
@@ -42,19 +39,14 @@ public class BaseService implements InitializingBean {
             throw new RuntimeException("Unable to process a Json");
         }
         return given()
-                .spec(BaseService.requestSpec)
+                .spec(requestSpec)
                 .body(body)
                 .when()
                 .post(endpoint)
                 .then()
-                .spec(BaseService.responseSpec)
+                .spec(responseSpec)
                 .log().all()
                 .extract()
                 .as(responseClass);
-    }
-
-    @Override
-    public void afterPropertiesSet() {
-        System.out.println("I was constructed!");
     }
 }

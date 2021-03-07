@@ -4,7 +4,7 @@ public class CommonUtils {
     private CommonUtils() {
     }
 
-    public static boolean verifyTimestampCreationIsLessThanNow(long timeStamp, long now) {
+    public static boolean isTimestampCreationLessThanNow(long timeStamp, long now) {
         return timeStamp < now;
     }
 }

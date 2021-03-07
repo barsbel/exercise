@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RegisterService extends BaseService {
+    private static final String REGISTER_ENDPOINT = "/register";
     public Response createUser(String userName, String password, String id) {
         return post(REGISTER_ENDPOINT, TestDataGenerator.prepareRegistrationData(userName, password, id), Response.class);
     }

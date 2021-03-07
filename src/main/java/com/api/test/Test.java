@@ -1,32 +1,28 @@
 package com.api.test;
 
-import com.api.core.config.TestSpringConfig;
 import com.api.core.utils.CommonUtils;
 import com.api.pojo.Response;
 import com.api.service.LoginService;
 import com.api.service.RegisterService;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.BeforeClass;
 
 import java.time.Instant;
 import java.util.Random;
 
 import static org.testng.Assert.*;
-import static org.testng.Assert.assertEquals;
 
-@ContextConfiguration(classes = TestSpringConfig.class)
-public class Test {
+public class Test extends BaseTest {
     private final Random random = new Random();
-    //        @Autowired
+
+    @Autowired
     protected LoginService loginService;
-    //        @Autowired
+    @Autowired
     protected RegisterService registerService;
 
-    @BeforeClass
-    public void initServices() {
-        loginService = new LoginService();
-        registerService = new RegisterService();
-    }
+    private String userName;
+    private String password;
+    private String id;
 
     @BeforeClass
     public void prepareTestData() {
@@ -34,10 +30,6 @@ public class Test {
         password = "Password" + random.nextInt(Integer.MAX_VALUE);
         id = String.valueOf(random.nextLong());
     }
-
-    private String userName;
-    private String password;
-    private String id;
 
     @org.testng.annotations.Test(priority = 1)
     public void verifyUserRegistration() {
@@ -51,7 +43,7 @@ public class Test {
     public void verifyLogin() {
         Response response = loginService.performLogin(userName, password);
         long userLastLoginDateTimeStamp = Instant.ofEpochMilli(response.getResult().getUser().getLastLoginDate()).toEpochMilli();
-        assertTrue(CommonUtils.verifyTimestampCreationIsLessThanNow(userLastLoginDateTimeStamp, Instant.now().toEpochMilli()),
+        assertTrue(CommonUtils.isTimestampCreationLessThanNow(userLastLoginDateTimeStamp, Instant.now().toEpochMilli()),
                 "User LastLoginDateTime is not correct.");
     }
 

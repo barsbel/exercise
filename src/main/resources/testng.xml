@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Parallel test suite" parallel="classes" thread-count="4">
+<suite name="Test suite" parallel="classes" thread-count="4">
     <test name="Api">
         <classes>
             <class name="com.api.test.Test">
-                <!--                <methods>-->
-                <!--                    <include name="verifyUserRegistration"/>-->
-                <!--                    <include name="verifyLogin"/>-->
-                <!--                    <include name="verifyErrorMessage"/>-->
-                <!--                </methods>-->
+                <methods>
+                    <include name="verifyUserRegistration"/>
+                    <include name="verifyLogin"/>
+                    <include name="verifyErrorMessage"/>
+                </methods>
             </class>
         </classes>
     </test>
